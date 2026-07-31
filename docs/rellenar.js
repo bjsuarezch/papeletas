@@ -16,10 +16,12 @@
   var ALTURA_PAGINA = 234;
 
   // Posiciones (puntos PDF, origen abajo-izquierda)
-  var FECHA_X = 312.0, FECHA_Y = ALTURA_PAGINA - 44.9;
-  var OBRA_Y = ALTURA_PAGINA - 91.7;    // Donaciones (Obra mundial)
-  var CONG_Y = ALTURA_PAGINA - 106.0;   // Donaciones (Gastos de la congregacion)
-  var TOTAL_Y = ALTURA_PAGINA - 163.0;  // TOTAL:
+  // Ajustadas tras inspeccion con zoom: el texto debe apoyarse sobre las
+  // lineas punteadas, no cruzarlas ni flotar sobre ellas.
+  var FECHA_X = 312.0, FECHA_Y = ALTURA_PAGINA - 43.4;
+  var OBRA_Y = ALTURA_PAGINA - 90.6;    // Donaciones (Obra mundial)
+  var CONG_Y = ALTURA_PAGINA - 104.9;   // Donaciones (Gastos de la congregacion)
+  var TOTAL_Y = ALTURA_PAGINA - 161.9;  // TOTAL:
   var MONTO_X_DER = 357.0;
 
   // Casilla "Donacion" (se marca con una X)
@@ -28,8 +30,8 @@
     { x1: 44.8, y1: ALTURA_PAGINA - 50.9, x2: 38.2, y2: ALTURA_PAGINA - 56.3 }
   ];
 
-  // Lineas de firma
-  var FIRMA_Y = ALTURA_PAGINA - 180.5;
+  // Lineas de firma: el nombre va apoyado sobre la linea (como al firmar)
+  var FIRMA_Y = ALTURA_PAGINA - 183.3;
   var RELLENADO = { x0: 23.6, x1: 193.1 };
   var VERIFICADO = { x0: 203.1, x1: 372.5 };
 
