@@ -1,0 +1,6 @@
+# Solo la app estatica (docs/) se publica en GitHub.
+# Todo lo demas queda solo en este PC.
+*
+!.gitignore
+!docs/
+!docs/**

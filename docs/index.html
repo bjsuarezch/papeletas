@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Papeletas S-24</title>
+  <meta name="theme-color" content="#2b7a78">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Papeletas">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icono-192.png">
+  <link rel="apple-touch-icon" href="icono-192.png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #eef2f5; color: #1c2b33; min-height: 100vh;
+      display: flex; justify-content: center; padding: 20px 12px 40px;
+    }
+    .contenedor { width: 100%; max-width: 420px; }
+    .tarjeta {
+      background: #fff; border-radius: 14px; padding: 24px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.10); margin-bottom: 16px;
+    }
+    h1 { font-size: 1.25rem; margin-bottom: 4px; }
+    .sub { color: #5a6b75; font-size: .85rem; margin-bottom: 18px; }
+    label { display: block; font-weight: 600; font-size: .9rem; margin: 14px 0 5px; }
+    input {
+      width: 100%; padding: 12px; font-size: 1.05rem;
+      border: 1.5px solid #c6d2d9; border-radius: 9px; background: #fbfdfe;
+    }
+    input:focus { outline: 2px solid #2b7a78; border-color: #2b7a78; }
+    .fila { display: flex; gap: 10px; }
+    .fila > div { flex: 1; }
+    button, a.boton {
+      display: block; width: 100%; margin-top: 12px; padding: 14px; font-size: 1.05rem;
+      font-weight: 700; text-align: center; text-decoration: none;
+      color: #fff; background: #2b7a78; border: none; border-radius: 10px; cursor: pointer;
+    }
+    button:active, a.boton:active { background: #226160; }
+    .secundario { background: #546e7a; }
+    .error {
+      background: #fdecea; color: #b3261e; border-radius: 8px;
+      padding: 10px 12px; font-size: .88rem; margin-bottom: 8px;
+    }
+    .hint { font-size: .78rem; color: #7a8a94; margin-top: 3px; }
+    .ok { font-size: 2.2rem; text-align: center; }
+    .resumen {
+      background: #f2f7f7; border-radius: 10px; padding: 12px 14px;
+      font-size: .92rem; line-height: 1.7; margin: 12px 0;
+    }
+    .resumen b { float: right; }
+    .pasos { background: #e8f5e9; border-radius: 10px; padding: 12px 14px 12px 30px; margin-top: 10px; }
+    .pasos li { font-size: .9rem; margin: 6px 0; }
+    .oculto { display: none; }
+    h2 { font-size: 1rem; margin-bottom: 8px; }
+    .hist-item {
+      font-size: .85rem; padding: 9px 4px; border-bottom: 1px solid #e3eaee;
+      display: flex; justify-content: space-between; gap: 8px;
+    }
+    .hist-item:last-child { border-bottom: none; }
+    .hist-item .quien { color: #5a6b75; font-size: .78rem; }
+    .hist-item .montos { text-align: right; white-space: nowrap; }
+    .vacio { color: #8a9aa4; font-size: .85rem; text-align: center; padding: 8px; }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+
+    <!-- ============ FORMULARIO ============ -->
+    <div class="tarjeta" id="vista-formulario">
+      <h1>📋 Papeleta S-24</h1>
+      <p class="sub">Registro de transacción — conteo de cajas</p>
+
+      <div class="error oculto" id="error"></div>
+
+      <form id="formulario">
+        <label for="fecha">Fecha de la reunión</label>
+        <input type="date" id="fecha" required>
+
+        <div class="fila">
+          <div>
+            <label for="obra">🌍 Obra mundial</label>
+            <input type="text" inputmode="numeric" id="obra" placeholder="0" required autocomplete="off">
+          </div>
+          <div>
+            <label for="congregacion">🏛️ Salón (congreg.)</label>
+            <input type="text" inputmode="numeric" id="congregacion" placeholder="0" required autocomplete="off">
+          </div>
+        </div>
+        <p class="hint">Escribe solo los números; el formato de miles se pone solo.</p>
+
+        <label for="rellenado_por">Rellenado por (tú)</label>
+        <input type="text" id="rellenado_por" required autocomplete="name">
+
+        <label for="verificado_por">Verificado por (compañero)</label>
+        <input type="text" id="verificado_por" required autocomplete="off">
+
+        <button type="submit" id="btn-generar">Generar y compartir</button>
+      </form>
+    </div>
+
+    <!-- ============ RESULTADO ============ -->
+    <div class="tarjeta oculto" id="vista-listo">
+      <div class="ok">✅</div>
+      <h1 style="text-align:center">Papeleta generada</h1>
+
+      <div class="resumen" id="resumen"></div>
+
+      <button id="btn-compartir">📤 Compartir (WhatsApp / Drive)</button>
+      <button class="secundario" id="btn-descargar">⬇️ Descargar PDF</button>
+      <button class="secundario" id="btn-nueva">➕ Nueva papeleta</button>
+
+      <ol class="pasos">
+        <li>Toca <b>Compartir</b></li>
+        <li>Elige <b>WhatsApp</b> y el grupo de la congregación → enviar</li>
+        <li>Para <b>Drive</b>: comparte de nuevo y elige <b>Drive</b> → guardar en la carpeta</li>
+      </ol>
+    </div>
+
+    <!-- ============ HISTORIAL ============ -->
+    <div class="tarjeta">
+      <h2>🗂️ Historial de papeletas</h2>
+      <div id="historial"></div>
+    </div>
+
+  </div>
+
+  <script src="pdf-lib.min.js"></script>
+  <script src="plantilla.js"></script>
+  <script src="rellenar.js"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    // ---------- Estado ----------
+    var ultimoPdf = null; // { bytes, nombreArchivo, datos }
+
+    // ---------- Utilidades ----------
+    function $(id) { return document.getElementById(id); }
+
+    function hoy() {
+      var d = new Date();
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+
+    function fechaBonita(iso) { // aaaa-mm-dd -> dd/mm/aaaa
+      var p = iso.split("-");
+      return p[2] + "/" + p[1] + "/" + p[0];
+    }
+
+    function cargarJSON(clave, defecto) {
+      try { return JSON.parse(localStorage.getItem(clave)) || defecto; }
+      catch (e) { return defecto; }
+    }
+
+    function mostrarError(msg) {
+      var e = $("error");
+      e.textContent = msg;
+      e.classList.remove("oculto");
+    }
+
+    // ---------- Inicializacion ----------
+    $("fecha").value = hoy();
+    var config = cargarJSON("s24_config", {});
+    $("rellenado_por").value = config.rellenado_por || "";
+    $("verificado_por").value = config.verificado_por || "";
+    pintarHistorial();
+
+    // ---------- Generar ----------
+    $("formulario").addEventListener("submit", async function (ev) {
+      ev.preventDefault();
+      $("error").classList.add("oculto");
+      var btn = $("btn-generar");
+      btn.disabled = true;
+      btn.textContent = "Generando...";
+
+      try {
+        var obra = Rellenar.formatearMonto($("obra").value);
+        var cong = Rellenar.formatearMonto($("congregacion").value);
+        var rellenadoPor = $("rellenado_por").value.trim();
+        var verificadoPor = $("verificado_por").value.trim();
+        var fechaIso = $("fecha").value;
+        if (!fechaIso || !rellenadoPor || !verificadoPor) {
+          throw new Error("Completa la fecha y ambos nombres.");
+        }
+
+        var datos = {
+          fecha: fechaBonita(fechaIso),
+          obra: obra,
+          congregacion: cong,
+          rellenadoPor: rellenadoPor,
+          verificadoPor: verificadoPor
+        };
+        var bytes = await Rellenar.generarPapeleta(PDFLib, PLANTILLA_B64, datos);
+
+        var ahora = new Date();
+        var nombreArchivo = "S-24_" + fechaIso + "_" +
+          String(ahora.getHours()).padStart(2, "0") + String(ahora.getMinutes()).padStart(2, "0") + ".pdf";
+
+        ultimoPdf = { bytes: bytes, nombreArchivo: nombreArchivo, datos: datos };
+
+        // Recordar nombres y guardar en historial
+        localStorage.setItem("s24_config", JSON.stringify({
+          rellenado_por: rellenadoPor, verificado_por: verificadoPor
+        }));
+        agregarHistorial({
+          fecha: datos.fecha, obra: obra, congregacion: cong,
+          total: Rellenar.formatearMonto(Rellenar.montoAEntero(obra) + Rellenar.montoAEntero(cong)),
+          rellenadoPor: rellenadoPor, verificadoPor: verificadoPor
+        });
+
+        mostrarResultado(datos, nombreArchivo);
+
+        // Intentar compartir de una vez (estamos dentro del gesto del usuario)
+        compartir(false);
+      } catch (err) {
+        mostrarError(err.message || "Revisa los datos ingresados.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Generar y compartir";
+      }
+    });
+
+    function mostrarResultado(datos, nombreArchivo) {
+      var total = Rellenar.formatearMonto(
+        Rellenar.montoAEntero(datos.obra) + Rellenar.montoAEntero(datos.congregacion));
+      $("resumen").innerHTML =
+        "Fecha <b>" + datos.fecha + "</b><br>" +
+        "Obra mundial <b>" + datos.obra + "</b><br>" +
+        "Salón (congregación) <b>" + datos.congregacion + "</b><br>" +
+        "TOTAL <b>" + total + "</b><br>" +
+        "Rellenado por <b>" + datos.rellenadoPor + "</b><br>" +
+        "Verificado por <b>" + datos.verificadoPor + "</b>";
+      $("vista-formulario").classList.add("oculto");
+      $("vista-listo").classList.remove("oculto");
+      window.scrollTo(0, 0);
+    }
+
+    // ---------- Compartir / descargar ----------
+    function compartir(mostrarFallback) {
+      if (!ultimoPdf) return;
+      var archivo = new File([ultimoPdf.bytes], ultimoPdf.nombreArchivo, { type: "application/pdf" });
+      if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+        navigator.share({ files: [archivo], title: "Papeleta S-24" }).catch(function () {
+          // Usuario cancelo o fallo: no hacer nada, puede reintentar con el boton
+        });
+      } else {
+        // Este navegador no soporta compartir archivos: descargar
+        descargar();
+        if (mostrarFallback !== false) {
+          alert("Tu navegador no soporta compartir archivos directamente.\n" +
+                "El PDF se descargó: envíalo desde tu carpeta de descargas.");
+        }
+      }
+    }
+
+    function descargar() {
+      if (!ultimoPdf) return;
+      var blob = new Blob([ultimoPdf.bytes], { type: "application/pdf" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = ultimoPdf.nombreArchivo;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+    }
+
+    $("btn-compartir").addEventListener("click", function () { compartir(true); });
+    $("btn-descargar").addEventListener("click", descargar);
+    $("btn-nueva").addEventListener("click", function () {
+      $("vista-listo").classList.add("oculto");
+      $("vista-formulario").classList.remove("oculto");
+      $("obra").value = "";
+      $("congregacion").value = "";
+      $("fecha").value = hoy();
+      window.scrollTo(0, 0);
+    });
+
+    // ---------- Historial ----------
+    function agregarHistorial(reg) {
+      var h = cargarJSON("s24_historial", []);
+      h.unshift(reg);
+      h = h.slice(0, 30);
+      localStorage.setItem("s24_historial", JSON.stringify(h));
+      pintarHistorial();
+    }
+
+    function pintarHistorial() {
+      var h = cargarJSON("s24_historial", []);
+      var cont = $("historial");
+      if (!h.length) {
+        cont.innerHTML = '<p class="vacio">Aún no hay papeletas generadas.</p>';
+        return;
+      }
+      cont.innerHTML = h.map(function (r) {
+        return '<div class="hist-item">' +
+          "<div><b>" + r.fecha + "</b><br><span class=\"quien\">" +
+          r.rellenadoPor + " · " + r.verificadoPor + "</span></div>" +
+          '<div class="montos">🌍 ' + r.obra + "<br>🏛️ " + r.congregacion + "</div>" +
+          "</div>";
+      }).join("");
+    }
+
+    // ---------- PWA (solo con https/localhost) ----------
+    if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    }
+  })();
+  </script>
+</body>
+</html>
