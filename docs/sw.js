@@ -1,5 +1,5 @@
 /* Service worker: la app funciona sin conexion despues de la primera carga */
-var CACHE = "papeletas-s24-v2";
+var CACHE = "papeletas-s24-v7";
 var ARCHIVOS = [
   ".",
   "index.html",

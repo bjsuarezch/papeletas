@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Papeletas S-24</title>
-  <meta name="theme-color" content="#2b7a78">
+  <meta name="theme-color" content="#a34d28">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -13,68 +13,143 @@
   <link rel="icon" href="icono-192.png">
   <link rel="apple-touch-icon" href="icono-192.png">
   <style>
+    /* ============ TEMA TERRACOTA ============ */
+    :root {
+      --bg: #f1e9da; --card: #fcf7ec; --text: #402e22; --muted: #8a7561;
+      --accent: #a34d28; --accent-2: #96755f; --accent-text: #ffffff;
+      --input-bg: #faf3e5; --border: #dcc8ac; --radius: 6px;
+      --font-head: Georgia, "Times New Roman", serif;
+      --font-body: Georgia, "Times New Roman", serif;
+      --shadow: 0 1px 4px rgba(100,60,30,.10);
+      --card-border: 1.5px solid #e3d3b8;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: #eef2f5; color: #1c2b33; min-height: 100vh;
+      font-family: var(--font-body);
+      background: var(--bg); color: var(--text); min-height: 100vh;
       display: flex; justify-content: center; padding: 20px 12px 40px;
     }
     .contenedor { width: 100%; max-width: 420px; }
+
+    /* ============ ICONOS SVG ============ */
+    .ico { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -2px; }
+    .ico-md { width: 1.4em; height: 1.4em; vertical-align: -3px; }
+    .ico-lg { width: 56px; height: 56px; }
+
+    /* ============ TARJETAS ============ */
     .tarjeta {
-      background: #fff; border-radius: 14px; padding: 24px 20px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.10); margin-bottom: 16px;
+      background: var(--card); border-radius: var(--radius); padding: 24px 20px;
+      box-shadow: var(--shadow); border: var(--card-border); margin-bottom: 16px;
+      animation: aparecer .35s ease both;
     }
-    h1 { font-size: 1.25rem; margin-bottom: 4px; }
-    .sub { color: #5a6b75; font-size: .85rem; margin-bottom: 18px; }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .tarjeta:nth-child(1) { animation-delay: 0s; }
+    .tarjeta:nth-child(2) { animation-delay: .05s; }
+
+    h1 { font-size: 1.3rem; margin-bottom: 4px; font-family: var(--font-head); display: flex; align-items: center; gap: 8px; }
+    .sub { color: var(--muted); font-size: .85rem; margin-bottom: 18px; }
     label { display: block; font-weight: 600; font-size: .9rem; margin: 14px 0 5px; }
-    input {
-      width: 100%; padding: 12px; font-size: 1.05rem;
-      border: 1.5px solid #c6d2d9; border-radius: 9px; background: #fbfdfe;
+    input, select {
+      width: 100%; padding: 12px; font-size: 1.05rem; font-family: var(--font-body);
+      border: 1.5px solid var(--border); border-radius: calc(var(--radius) - 1px);
+      background: var(--input-bg); color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
     }
-    input:focus { outline: 2px solid #2b7a78; border-color: #2b7a78; }
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
     .fila { display: flex; gap: 10px; }
     .fila > div { flex: 1; }
     button, a.boton {
-      display: block; width: 100%; margin-top: 12px; padding: 14px; font-size: 1.05rem;
-      font-weight: 700; text-align: center; text-decoration: none;
-      color: #fff; background: #2b7a78; border: none; border-radius: 10px; cursor: pointer;
+      display: block; width: 100%; margin-top: 12px; padding: 14px; font-size: 1.02rem;
+      font-weight: 700; font-family: var(--font-head); text-align: center; text-decoration: none;
+      color: var(--accent-text); background: var(--accent);
+      border: none; border-radius: calc(var(--radius) - 1px); cursor: pointer;
+      transition: filter .15s, transform .08s;
     }
-    button:active, a.boton:active { background: #226160; }
-    .secundario { background: #546e7a; }
+    button:active, a.boton:active { filter: brightness(.92); transform: scale(.99); }
+    .secundario { background: var(--accent-2); }
     .error {
-      background: #fdecea; color: #b3261e; border-radius: 8px;
+      background: #f9e3dc; color: #a33020; border: 1px solid #e8b8a8; border-radius: 8px;
       padding: 10px 12px; font-size: .88rem; margin-bottom: 8px;
+      display: flex; align-items: flex-start; gap: 8px;
     }
-    .hint { font-size: .78rem; color: #7a8a94; margin-top: 3px; }
-    .ok { font-size: 2.2rem; text-align: center; }
+    .hint { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+    .ok { font-size: 2.2rem; text-align: center; color: var(--accent); }
     .resumen {
-      background: #f2f7f7; border-radius: 10px; padding: 12px 14px;
+      background: color-mix(in srgb, var(--accent) 8%, var(--card));
+      border-radius: calc(var(--radius) - 1px); padding: 12px 14px;
       font-size: .92rem; line-height: 1.7; margin: 12px 0;
     }
     .resumen b { float: right; }
-    .pasos { background: #e8f5e9; border-radius: 10px; padding: 12px 14px 12px 30px; margin-top: 10px; }
+    .pasos {
+      background: color-mix(in srgb, var(--accent) 10%, var(--card));
+      border-radius: calc(var(--radius) - 1px); padding: 12px 14px 12px 30px; margin-top: 10px;
+    }
     .pasos li { font-size: .9rem; margin: 6px 0; }
     .oculto { display: none; }
-    h2 { font-size: 1rem; margin-bottom: 8px; }
-    .hist-item {
-      font-size: .85rem; padding: 9px 4px; border-bottom: 1px solid #e3eaee;
-      display: flex; justify-content: space-between; gap: 8px;
+    h2 { font-size: 1.05rem; margin-bottom: 8px; font-family: var(--font-head); display: flex; align-items: center; gap: 8px; }
+
+    /* ============ TABLET / iPAD: APARIENCIA MÁS ESPACIOSA ============ */
+    @media (min-width: 900px) {
+      body { padding: 32px 24px 60px; }
+      .tarjeta { padding: 28px 26px; }
+      h1 { font-size: 1.45rem; }
+      input, select { padding: 13px; }
+      button, a.boton { padding: 15px; }
+      /* Boton principal acotado */
+      #btn-generar { max-width: 360px; margin-left: auto; margin-right: auto; }
     }
-    .hist-item:last-child { border-bottom: none; }
-    .hist-item .quien { color: #5a6b75; font-size: .78rem; }
-    .hist-item .montos { text-align: right; white-space: nowrap; }
-    .vacio { color: #8a9aa4; font-size: .85rem; text-align: center; padding: 8px; }
+
+    /* ============ ACCESIBILIDAD: REDUCIR ANIMACIONES ============ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
+  <!-- ============ SPRITE DE ICONOS SVG ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </symbol>
+      <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>
+      </symbol>
+      <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
+      </symbol>
+      <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="contenedor">
 
     <!-- ============ FORMULARIO ============ -->
     <div class="tarjeta" id="vista-formulario">
-      <h1>📋 Papeleta S-24</h1>
+      <h1><svg class="ico" aria-hidden="true"><use href="#i-clipboard"/></svg> Papeleta S-24</h1>
       <p class="sub">Registro de transacción — conteo de cajas</p>
 
-      <div class="error oculto" id="error"></div>
+      <div class="error oculto" id="error">
+        <svg class="ico" aria-hidden="true"><use href="#i-alert"/></svg>
+        <span id="error-texto"></span>
+      </div>
 
       <form id="formulario">
         <label for="fecha">Fecha de la reunión</label>
@@ -82,11 +157,11 @@
 
         <div class="fila">
           <div>
-            <label for="obra">🌍 Obra mundial</label>
+            <label for="obra"><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg> Obra mundial</label>
             <input type="text" inputmode="numeric" id="obra" placeholder="0" required autocomplete="off">
           </div>
           <div>
-            <label for="congregacion">🏛️ Salón (congreg.)</label>
+            <label for="congregacion"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg> Salón (congreg.)</label>
             <input type="text" inputmode="numeric" id="congregacion" placeholder="0" required autocomplete="off">
           </div>
         </div>
@@ -98,32 +173,38 @@
         <label for="verificado_por">Verificado por (compañero)</label>
         <input type="text" id="verificado_por" required autocomplete="off">
 
-        <button type="submit" id="btn-generar">Generar y compartir</button>
+        <button type="submit" id="btn-generar">
+          <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg>
+          Generar y compartir
+        </button>
       </form>
     </div>
 
     <!-- ============ RESULTADO ============ -->
     <div class="tarjeta oculto" id="vista-listo">
-      <div class="ok">✅</div>
-      <h1 style="text-align:center">Papeleta generada</h1>
+      <div class="ok"><svg class="ico-lg" aria-hidden="true"><use href="#i-check"/></svg></div>
+      <h1 style="text-align:center;justify-content:center">Papeleta generada</h1>
 
       <div class="resumen" id="resumen"></div>
 
-      <button id="btn-compartir">📤 Compartir (WhatsApp / Drive)</button>
-      <button class="secundario" id="btn-descargar">⬇️ Descargar PDF</button>
-      <button class="secundario" id="btn-nueva">➕ Nueva papeleta</button>
+      <button id="btn-compartir">
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-share"/></svg>
+        Compartir (WhatsApp / Drive)
+      </button>
+      <button class="secundario" id="btn-descargar">
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-download"/></svg>
+        Descargar PDF
+      </button>
+      <button class="secundario" id="btn-nueva">
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-plus"/></svg>
+        Nueva papeleta
+      </button>
 
-      <ol class="pasos">
+      <ol class="pasos" id="pasos-compartir">
         <li>Toca <b>Compartir</b></li>
         <li>Elige <b>WhatsApp</b> y el grupo de la congregación → enviar</li>
         <li>Para <b>Drive</b>: comparte de nuevo y elige <b>Drive</b> → guardar en la carpeta</li>
       </ol>
-    </div>
-
-    <!-- ============ HISTORIAL ============ -->
-    <div class="tarjeta">
-      <h2>🗂️ Historial de papeletas</h2>
-      <div id="historial"></div>
     </div>
 
   </div>
@@ -136,30 +217,34 @@
     "use strict";
 
     // ---------- Estado ----------
-    var ultimoPdf = null; // { bytes, nombreArchivo, datos }
+    var ultimoPdf = null;
 
     // ---------- Utilidades ----------
     function $(id) { return document.getElementById(id); }
-
     function hoy() {
       var d = new Date();
       return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
     }
-
-    function fechaBonita(iso) { // aaaa-mm-dd -> dd/mm/aaaa
-      var p = iso.split("-");
-      return p[2] + "/" + p[1] + "/" + p[0];
+    function fechaBonita(iso) { var p = iso.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+    function cargarJSON(c, d) { try { return JSON.parse(localStorage.getItem(c)) || d; } catch (e) { return d; } }
+    function guardarConfig(extra) {
+      var c = cargarJSON("s24_config", {});
+      Object.keys(extra).forEach(function (k) { c[k] = extra[k]; });
+      localStorage.setItem("s24_config", JSON.stringify(c));
     }
-
-    function cargarJSON(clave, defecto) {
-      try { return JSON.parse(localStorage.getItem(clave)) || defecto; }
-      catch (e) { return defecto; }
-    }
-
     function mostrarError(msg) {
-      var e = $("error");
-      e.textContent = msg;
-      e.classList.remove("oculto");
+      $("error-texto").textContent = msg;
+      $("error").classList.remove("oculto");
+    }
+    function totalDe(r) {
+      return Rellenar.formatearMonto(Rellenar.montoAEntero(r.obra) + Rellenar.montoAEntero(r.congregacion));
+    }
+    function textoResumen(r) {
+      return "📋 Papeleta S-24 — " + r.fecha + "\n" +
+        "🌍 Obra mundial: " + r.obra + "\n" +
+        "🏛️ Salón: " + r.congregacion + "\n" +
+        "💰 TOTAL: " + totalDe(r) + "\n" +
+        "✍️ " + r.rellenadoPor + " · ✔️ " + r.verificadoPor;
     }
 
     // ---------- Inicializacion ----------
@@ -167,15 +252,24 @@
     var config = cargarJSON("s24_config", {});
     $("rellenado_por").value = config.rellenado_por || "";
     $("verificado_por").value = config.verificado_por || "";
-    pintarHistorial();
 
-    // ---------- Generar ----------
+    // Si el navegador no soporta compartir archivos (iOS en HTTP), cambiar instrucciones
+    if (!soportaCompartir()) {
+      $("pasos-compartir").innerHTML =
+        "<li>Toca <b>Descargar PDF</b>: se abre en una pestaña nueva</li>" +
+        "<li>En esa pestaña usa el botón <b>Compartir</b> de Safari (cuadrado con flecha ↑)</li>" +
+        "<li>Elige <b>WhatsApp</b> → el grupo → enviar. Igual para <b>Drive</b></li>";
+      $("btn-descargar").innerHTML =
+        '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-share"/></svg>Abrir PDF';
+    }
+
+    // ---------- Generar papeleta ----------
     $("formulario").addEventListener("submit", async function (ev) {
       ev.preventDefault();
       $("error").classList.add("oculto");
       var btn = $("btn-generar");
       btn.disabled = true;
-      btn.textContent = "Generando...";
+      btn.innerHTML = "Generando...";
 
       try {
         var obra = Rellenar.formatearMonto($("obra").value);
@@ -202,40 +296,34 @@
 
         ultimoPdf = { bytes: bytes, nombreArchivo: nombreArchivo, datos: datos };
 
-        // Recordar nombres y guardar en historial
-        localStorage.setItem("s24_config", JSON.stringify({
-          rellenado_por: rellenadoPor, verificado_por: verificadoPor
-        }));
-        agregarHistorial({
-          fecha: datos.fecha, obra: obra, congregacion: cong,
-          total: Rellenar.formatearMonto(Rellenar.montoAEntero(obra) + Rellenar.montoAEntero(cong)),
-          rellenadoPor: rellenadoPor, verificadoPor: verificadoPor
-        });
+        guardarConfig({ rellenado_por: rellenadoPor, verificado_por: verificadoPor });
 
-        mostrarResultado(datos, nombreArchivo);
-
-        // Intentar compartir de una vez (estamos dentro del gesto del usuario)
-        compartir(false);
+        mostrarResultado(datos);
+        // Auto-compartir SOLO si el navegador lo soporta (nunca auto-descargar)
+        var archivoPrueba = new File([bytes], nombreArchivo, { type: "application/pdf" });
+        if (navigator.canShare && navigator.canShare({ files: [archivoPrueba] })) {
+          compartir(false);
+        }
       } catch (err) {
         mostrarError(err.message || "Revisa los datos ingresados.");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Generar y compartir";
+        btn.innerHTML = '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg>Generar y compartir';
       }
     });
 
-    function mostrarResultado(datos, nombreArchivo) {
-      var total = Rellenar.formatearMonto(
-        Rellenar.montoAEntero(datos.obra) + Rellenar.montoAEntero(datos.congregacion));
+    function mostrarResultado(datos) {
       $("resumen").innerHTML =
         "Fecha <b>" + datos.fecha + "</b><br>" +
-        "Obra mundial <b>" + datos.obra + "</b><br>" +
-        "Salón (congregación) <b>" + datos.congregacion + "</b><br>" +
-        "TOTAL <b>" + total + "</b><br>" +
+        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-globe\"/></svg> Obra mundial <b>" + datos.obra + "</b><br>" +
+        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-building\"/></svg> Salón (congregación) <b>" + datos.congregacion + "</b><br>" +
+        "TOTAL <b>" + totalDe(datos) + "</b><br>" +
         "Rellenado por <b>" + datos.rellenadoPor + "</b><br>" +
         "Verificado por <b>" + datos.verificadoPor + "</b>";
       $("vista-formulario").classList.add("oculto");
       $("vista-listo").classList.remove("oculto");
+      $("vista-listo").style.animation = "none"; void $("vista-listo").offsetWidth;
+      $("vista-listo").style.animation = "aparecer .35s ease both";
       window.scrollTo(0, 0);
     }
 
@@ -243,31 +331,50 @@
     function compartir(mostrarFallback) {
       if (!ultimoPdf) return;
       var archivo = new File([ultimoPdf.bytes], ultimoPdf.nombreArchivo, { type: "application/pdf" });
-      if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
-        navigator.share({ files: [archivo], title: "Papeleta S-24" }).catch(function () {
-          // Usuario cancelo o fallo: no hacer nada, puede reintentar con el boton
-        });
+      // iOS no mezcla archivo + texto/titulo (bug de WebKit): la hoja de compartir
+      // no se abre si el objeto lleva text junto a files. En iOS va SOLO el archivo.
+      var datos = { files: [archivo] };
+      if (!esIOS()) {
+        datos.text = textoResumen(ultimoPdf.datos);
+        datos.title = "Papeleta S-24";
+      }
+      if (navigator.canShare && navigator.canShare(datos)) {
+        navigator.share(datos).catch(function () {});
       } else {
-        // Este navegador no soporta compartir archivos: descargar
         descargar();
         if (mostrarFallback !== false) {
           alert("Tu navegador no soporta compartir archivos directamente.\n" +
-                "El PDF se descargó: envíalo desde tu carpeta de descargas.");
+                "El PDF se abrió en una pestaña nueva: desde ahí puedes compartirlo o guardarlo.");
         }
       }
+    }
+
+    function esIOS() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+             (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    }
+
+    function soportaCompartir() {
+      try {
+        var f = new File([new Blob(["x"])], "x.pdf", { type: "application/pdf" });
+        return !!(navigator.canShare && navigator.canShare({ files: [f] }));
+      } catch (e) { return false; }
     }
 
     function descargar() {
       if (!ultimoPdf) return;
       var blob = new Blob([ultimoPdf.bytes], { type: "application/pdf" });
       var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = ultimoPdf.nombreArchivo;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      if (esIOS()) {
+        // iOS no "descarga" PDFs: los muestra. Abrir en pestana NUEVA para no perder la app.
+        window.open(url, "_blank");
+      } else {
+        var a = document.createElement("a");
+        a.href = url; a.download = ultimoPdf.nombreArchivo;
+        document.body.appendChild(a); a.click(); a.remove();
+      }
+      // La URL debe vivir hasta que la pestana nueva la cargue
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
     }
 
     $("btn-compartir").addEventListener("click", function () { compartir(true); });
@@ -281,32 +388,7 @@
       window.scrollTo(0, 0);
     });
 
-    // ---------- Historial ----------
-    function agregarHistorial(reg) {
-      var h = cargarJSON("s24_historial", []);
-      h.unshift(reg);
-      h = h.slice(0, 30);
-      localStorage.setItem("s24_historial", JSON.stringify(h));
-      pintarHistorial();
-    }
-
-    function pintarHistorial() {
-      var h = cargarJSON("s24_historial", []);
-      var cont = $("historial");
-      if (!h.length) {
-        cont.innerHTML = '<p class="vacio">Aún no hay papeletas generadas.</p>';
-        return;
-      }
-      cont.innerHTML = h.map(function (r) {
-        return '<div class="hist-item">' +
-          "<div><b>" + r.fecha + "</b><br><span class=\"quien\">" +
-          r.rellenadoPor + " · " + r.verificadoPor + "</span></div>" +
-          '<div class="montos">🌍 ' + r.obra + "<br>🏛️ " + r.congregacion + "</div>" +
-          "</div>";
-      }).join("");
-    }
-
-    // ---------- PWA (solo con https/localhost) ----------
+    // ---------- Service worker ----------
     if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     }

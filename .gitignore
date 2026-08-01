@@ -4,3 +4,6 @@
 !.gitignore
 !docs/
 !docs/**
+
+# La pagina de vista previa de disenos no se publica
+docs/preview.html
