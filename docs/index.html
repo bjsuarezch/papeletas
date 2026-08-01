@@ -4,37 +4,63 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Papeletas S-24</title>
-  <meta name="theme-color" content="#a34d28">
+  <meta name="theme-color" content="#000000">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Papeletas">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icono-192.png">
-  <link rel="apple-touch-icon" href="icono-192.png">
+  <link rel="apple-touch-icon" href="icono-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    /* ============ TEMA TERRACOTA ============ */
+    /* ============ TEMA MATRIX ============ */
     :root {
-      --bg: #f1e9da; --card: #fcf7ec; --text: #402e22; --muted: #8a7561;
-      --accent: #a34d28; --accent-2: #96755f; --accent-text: #ffffff;
-      --input-bg: #faf3e5; --border: #dcc8ac; --radius: 6px;
-      --font-head: Georgia, "Times New Roman", serif;
-      --font-body: Georgia, "Times New Roman", serif;
-      --shadow: 0 1px 4px rgba(100,60,30,.10);
-      --card-border: 1.5px solid #e3d3b8;
+      --bg: #000000; --card: rgba(0,20,0,.85); --text: #c8ffd4; --muted: #4f9e5e;
+      --accent: #00ff41; --accent-2: #003b00; --accent-text: #000000;
+      --input-bg: rgba(0,30,0,.6); --border: #00a832; --radius: 4px;
+      --font-head: "Share Tech Mono", "Roboto Mono", monospace;
+      --font-body: "Share Tech Mono", "Roboto Mono", monospace;
+      --shadow: 0 0 22px rgba(0,255,65,.15);
+      --card-border: 1px solid rgba(0,255,65,.4);
+      --sheen: rgba(0,255,65,.35);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
     body {
       font-family: var(--font-body);
-      background: var(--bg); color: var(--text); min-height: 100vh;
-      display: flex; justify-content: center; padding: 20px 12px 40px;
+      background-color: #000;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0,255,65,.025) 0 1px, transparent 1px 3px),
+        radial-gradient(600px 400px at 50% 0%, rgba(0,255,65,.10), transparent 70%);
+      color: var(--text); height: 100vh; height: 100dvh;
+      display: flex; justify-content: center;
+      padding: calc(20px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left));
+      color-scheme: dark;
+      overflow: hidden;
     }
-    .contenedor { width: 100%; max-width: 420px; }
+    .contenedor {
+      width: 100%; max-width: 420px; height: 100%;
+      overflow-y: auto; overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .contenedor::-webkit-scrollbar { width: 0; display: none; }
 
     /* ============ ICONOS SVG ============ */
     .ico { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -2px; }
-    .ico-md { width: 1.4em; height: 1.4em; vertical-align: -3px; }
     .ico-lg { width: 56px; height: 56px; }
+    .ico-marca { display: inline-block; width: 1.35em; height: 1.35em; vertical-align: -3px; }
+
+    /* ============ CABECERA ============ */
+    .cabecera { margin-bottom: 18px; animation: aparecer .5s ease both; }
+    .marca {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-head); font-size: 1.7rem; font-weight: 700; line-height: 1.1;
+      color: var(--text);
+    }
+    .cabecera .sub { color: var(--muted); font-size: .86rem; margin-top: 4px; }
 
     /* ============ TARJETAS ============ */
     .tarjeta {
@@ -52,13 +78,13 @@
     h1 { font-size: 1.3rem; margin-bottom: 4px; font-family: var(--font-head); display: flex; align-items: center; gap: 8px; }
     .sub { color: var(--muted); font-size: .85rem; margin-bottom: 18px; }
     label { display: block; font-weight: 600; font-size: .9rem; margin: 14px 0 5px; }
-    input, select {
+    input {
       width: 100%; padding: 12px; font-size: 1.05rem; font-family: var(--font-body);
       border: 1.5px solid var(--border); border-radius: calc(var(--radius) - 1px);
       background: var(--input-bg); color: var(--text);
       transition: border-color .2s, box-shadow .2s;
     }
-    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
     .fila { display: flex; gap: 10px; }
     .fila > div { flex: 1; }
     button, a.boton {
@@ -83,21 +109,141 @@
       font-size: .92rem; line-height: 1.7; margin: 12px 0;
     }
     .resumen b { float: right; }
-    .pasos {
-      background: color-mix(in srgb, var(--accent) 10%, var(--card));
-      border-radius: calc(var(--radius) - 1px); padding: 12px 14px 12px 30px; margin-top: 10px;
-    }
-    .pasos li { font-size: .9rem; margin: 6px 0; }
     .oculto { display: none; }
-    h2 { font-size: 1.05rem; margin-bottom: 8px; font-family: var(--font-head); display: flex; align-items: center; gap: 8px; }
+    .total-vivo {
+      margin-top: 10px; font-size: .95rem; font-weight: 700;
+    }
+    .total-vivo .monto { float: right; color: var(--accent); }
+    .preview {
+      margin-top: 12px; border: 1.5px solid var(--border); border-radius: calc(var(--radius) - 1px);
+      overflow: hidden; background: #fff;
+    }
+    .preview iframe { display: block; width: 100%; height: 340px; border: none; }
+
+    /* ============ EXTRAS MATRIX ============ */
+    #matrix-canvas { position: fixed; inset: 0; z-index: -3; pointer-events: none; display: block; }
+    /* resplandor verde que respira */
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(720px 420px at 50% -2%, rgba(0,255,65,.18), transparent 70%);
+      animation: holo 6s ease-in-out infinite;
+    }
+    @keyframes holo { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    /* scanlines CRT + viñeta */
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,.5) 100%);
+      animation: crtFlicker 4s linear infinite;
+    }
+    @keyframes crtFlicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: .88; }
+      94% { opacity: 1; }
+      97% { opacity: .94; }
+      98% { opacity: 1; }
+    }
+    .marca { font-family: var(--font-head); font-size: 1.6rem; letter-spacing: .08em; color: #00ff41; text-shadow: 0 0 8px rgba(0,255,65,.9); position: relative; }
+    .marca svg { color: #00ff41; filter: drop-shadow(0 0 6px rgba(0,255,65,.9)); }
+    .cabecera .sub { color: var(--muted); font-size: .78rem; }
+    .marca::after {
+      content: "█"; margin-left: 2px; color: #00ff41; position: relative;
+      text-shadow: 0 0 8px rgba(0,255,65,.9);
+      animation: cursorBlink 1s steps(1) infinite;
+    }
+    @keyframes cursorBlink { 50% { opacity: 0; } }
+    .marca:hover { animation: glitchRgb .28s steps(2) infinite; text-shadow: -2px 0 #ff0033, 2px 0 #00f0ff, 0 0 8px rgba(0,255,65,.9); }
+    .cabecera { border-bottom: 1px solid rgba(0,255,65,.5); padding-bottom: 12px; }
+    .cabecera-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .idiomas { display: flex; gap: 4px; flex: none; }
+    .idiomas button {
+      font-family: var(--font-head); font-size: .72rem; letter-spacing: .04em;
+      background: rgba(0,30,0,.7); color: #00ff41; border: 1px solid #00a832;
+      border-radius: 2px; padding: 4px 10px; cursor: pointer;
+      animation: none; box-shadow: none; text-transform: none;
+    }
+    .idiomas button:hover { background: rgba(0,255,65,.12); }
+    .idiomas button.activo {
+      background: #00ff41; color: #000;
+      box-shadow: 0 0 12px rgba(0,255,65,.5);
+    }
+    label {
+      color: #00c832; font-family: var(--font-head); font-size: .78rem;
+      letter-spacing: .06em; text-transform: uppercase; font-weight: 600;
+    }
+    input {
+      background: rgba(0,30,0,.6); border: 1px solid #00a832; color: #c8ffd4;
+      border-radius: 2px; text-shadow: 0 0 6px rgba(0,255,65,.4);
+    }
+    input:hover { border-color: #00ff41; }
+    input:focus {
+      border-color: #00ff41;
+      box-shadow: 0 0 0 3px rgba(0,255,65,.18), 0 0 16px rgba(0,255,65,.4);
+    }
+    input::placeholder { color: rgba(79,158,94,.6); }
+    button, a.boton {
+      background: #00ff41; color: #000; border-radius: 2px;
+      font-size: .9rem; letter-spacing: .08em; text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(0,255,65,.55);
+      animation: parpadeo 2s ease-in-out infinite;
+    }
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; box-shadow: 0 0 18px rgba(0,255,65,.55); }
+      50%      { opacity: .8; box-shadow: 0 0 30px rgba(0,255,65,.85); }
+    }
+    button:hover, a.boton:hover {
+      filter: brightness(1.15);
+      box-shadow: -3px 0 0 rgba(255,0,51,.55), 3px 0 0 rgba(0,240,255,.55), 0 0 22px rgba(0,255,65,.75);
+      animation: glitchRgb .28s steps(2) infinite;
+    }
+    .secundario {
+      background: rgba(0,30,0,.7); color: #00ff41; border: 1px solid #00a832;
+      box-shadow: 0 0 10px rgba(0,255,65,.2); animation: none;
+    }
+    .secundario:hover { background: rgba(0,255,65,.12); }
+    .error { background: rgba(90,0,0,.5); color: #ff6b5e; border: 1px solid rgba(255,60,50,.5); }
+    .resumen { background: rgba(0,25,0,.7); border: 1px solid rgba(0,255,65,.35); }
+    .ok { color: #00ff41; text-shadow: 0 0 18px rgba(0,255,65,.9); }
+    .total-vivo .monto { color: #00ff41; text-shadow: 0 0 10px rgba(0,255,65,.8); }
+    .preview { background: #001200; border-color: rgba(0,255,65,.35); }
+    @keyframes glitchRgb {
+      0%   { transform: translate(-1px, 0); }
+      25%  { transform: translate(1px, -1px); }
+      50%  { transform: translate(-1px, 1px); }
+      75%  { transform: translate(1px, 1px); }
+      100% { transform: translate(-1px, 0); }
+    }
+    /* Marco HUD de terminal */
+    .tarjeta { position: relative; overflow: hidden; }
+    .tarjeta::after {
+      content: ""; position: absolute; inset: 5px; pointer-events: none; z-index: 1;
+      border: 1px solid rgba(0,255,65,.16);
+    }
+    .barra-term {
+      display: flex; align-items: center; gap: 6px;
+      margin: -24px -20px 16px; padding: 7px 12px;
+      background: rgba(0,30,0,.9); border-bottom: 1px solid rgba(0,255,65,.35);
+      border-radius: 3px 3px 0 0;
+      font-family: var(--font-head); font-size: .78rem; color: #00ff41;
+      text-shadow: 0 0 6px rgba(0,255,65,.7); letter-spacing: .04em;
+    }
+    .barra-term .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .barra-term .dot-r { background: #ff2d55; box-shadow: 0 0 6px rgba(255,45,85,.6); }
+    .barra-term .dot-y { background: #ffb043; box-shadow: 0 0 6px rgba(255,176,67,.6); }
+    .barra-term .dot-g { background: #00ff41; box-shadow: 0 0 6px rgba(0,255,65,.6); }
+    .barra-term .term-titulo { flex: 1; margin-left: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .barra-term .term-ctrl { opacity: .75; letter-spacing: .12em; }
 
     /* ============ TABLET / iPAD: APARIENCIA MÁS ESPACIOSA ============ */
     @media (min-width: 900px) {
-      body { padding: 32px 24px 60px; }
+      body { padding: calc(32px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(60px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left)); }
       .tarjeta { padding: 28px 26px; }
       h1 { font-size: 1.45rem; }
-      input, select { padding: 13px; }
+      input { padding: 13px; }
       button, a.boton { padding: 15px; }
+      .barra-term { margin: -28px -26px 18px; }
       /* Boton principal acotado */
       #btn-generar { max-width: 360px; margin-left: auto; margin-right: auto; }
     }
@@ -109,6 +255,8 @@
   </style>
 </head>
 <body>
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
   <!-- ============ SPRITE DE ICONOS SVG ============ -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
@@ -141,76 +289,95 @@
 
   <div class="contenedor">
 
+    <!-- ============ CABECERA ============ -->
+    <header class="cabecera">
+      <div class="cabecera-top">
+        <div class="marca">
+          <svg class="ico-marca" aria-hidden="true"><use href="#i-clipboard"/></svg>
+          <span data-i18n="marca">Papeleta S-24</span>
+        </div>
+        <div class="idiomas" role="group" aria-label="Idioma / Language">
+          <button type="button" data-idioma="es" class="activo">Español</button>
+          <button type="button" data-idioma="en">English</button>
+        </div>
+      </div>
+      <p class="sub" data-i18n="cabecera_sub">Registro de transacción · conteo de cajas</p>
+    </header>
+
     <!-- ============ FORMULARIO ============ -->
     <div class="tarjeta" id="vista-formulario">
-      <h1><svg class="ico" aria-hidden="true"><use href="#i-clipboard"/></svg> Papeleta S-24</h1>
-      <p class="sub">Registro de transacción — conteo de cajas</p>
+      <div class="barra-term">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="term-titulo" data-i18n="term_form">C:\papeleta.exe — registro</span>
+        <span class="term-ctrl">[─] [□] [✕]</span>
+      </div>
 
-      <div class="error oculto" id="error">
+      <div class="error oculto" id="error" role="alert" aria-live="polite" tabindex="-1">
         <svg class="ico" aria-hidden="true"><use href="#i-alert"/></svg>
         <span id="error-texto"></span>
       </div>
 
       <form id="formulario">
-        <label for="fecha">Fecha de la reunión</label>
+        <label for="fecha" data-i18n="label_fecha">Fecha de la reunión</label>
         <input type="date" id="fecha" required>
 
         <div class="fila">
           <div>
-            <label for="obra"><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg> Obra mundial</label>
+            <label for="obra"><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg> <span data-i18n="label_obra">Obra mundial</span></label>
             <input type="text" inputmode="numeric" id="obra" placeholder="0" required autocomplete="off">
           </div>
           <div>
-            <label for="congregacion"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg> Salón (congreg.)</label>
+            <label for="congregacion"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg> <span data-i18n="label_cong">Salón (congreg.)</span></label>
             <input type="text" inputmode="numeric" id="congregacion" placeholder="0" required autocomplete="off">
           </div>
         </div>
-        <p class="hint">Escribe solo los números; el formato de miles se pone solo.</p>
+        <p class="hint" data-i18n="hint_montos">Escribe solo los números; el formato de miles se pone solo.</p>
 
-        <label for="rellenado_por">Rellenado por (tú)</label>
+        <div class="total-vivo"><span data-i18n="total">Total</span> <span class="monto" id="total-vivo-monto">—</span></div>
+
+        <label for="rellenado_por" data-i18n="label_rellenado">Rellenado por (tú)</label>
         <input type="text" id="rellenado_por" required autocomplete="name">
 
-        <label for="verificado_por">Verificado por (compañero)</label>
+        <label for="verificado_por" data-i18n="label_verificado">Verificado por (compañero)</label>
         <input type="text" id="verificado_por" required autocomplete="off">
 
         <button type="submit" id="btn-generar">
-          <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg>
-          Generar y compartir
+          <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="btn_generar">Generar y compartir</span>
         </button>
       </form>
     </div>
 
     <!-- ============ RESULTADO ============ -->
     <div class="tarjeta oculto" id="vista-listo">
+      <div class="barra-term">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="term-titulo" data-i18n="term_result">C:\resultado.txt — papeleta OK</span>
+        <span class="term-ctrl">[─] [□] [✕]</span>
+      </div>
       <div class="ok"><svg class="ico-lg" aria-hidden="true"><use href="#i-check"/></svg></div>
-      <h1 style="text-align:center;justify-content:center">Papeleta generada</h1>
+      <h1 style="text-align:center;justify-content:center;color:#00ff41;text-shadow:0 0 8px rgba(0,255,65,.9)" data-i18n="h1_resultado">Papeleta generada</h1>
 
-      <div class="resumen" id="resumen"></div>
+      <div class="resumen" id="resumen" aria-live="polite"></div>
+
+      <div class="preview" id="preview">
+        <iframe id="vista-pdf" title="Vista previa de la papeleta"></iframe>
+      </div>
 
       <button id="btn-compartir">
-        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-share"/></svg>
-        Compartir (WhatsApp / Drive)
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-share"/></svg><span data-i18n="btn_compartir">Compartir</span>
       </button>
       <button class="secundario" id="btn-descargar">
-        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-download"/></svg>
-        Descargar PDF
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-download"/></svg><span data-i18n="btn_descargar">Descargar PDF</span>
       </button>
       <button class="secundario" id="btn-nueva">
-        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-plus"/></svg>
-        Nueva papeleta
+        <svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-plus"/></svg><span data-i18n="btn_nueva">Nueva papeleta</span>
       </button>
-
-      <ol class="pasos" id="pasos-compartir">
-        <li>Toca <b>Compartir</b></li>
-        <li>Elige <b>WhatsApp</b> y el grupo de la congregación → enviar</li>
-        <li>Para <b>Drive</b>: comparte de nuevo y elige <b>Drive</b> → guardar en la carpeta</li>
-      </ol>
     </div>
 
   </div>
 
-  <script src="pdf-lib.min.js"></script>
   <script src="plantilla.js"></script>
+  <script src="plantilla-en.js"></script>
   <script src="rellenar.js"></script>
   <script>
   (function () {
@@ -218,6 +385,114 @@
 
     // ---------- Estado ----------
     var ultimoPdf = null;
+
+    // ---------- Idiomas ----------
+    var IDIOMAS = {
+      es: {
+        marca: "Papeleta S-24",
+        cabecera_sub: "Registro de transacción · conteo de cajas",
+        term_form: "C:\\papeleta.exe — registro",
+        term_result: "C:\\resultado.txt — papeleta OK",
+        label_fecha: "Fecha de la reunión",
+        label_obra: "Obra mundial",
+        label_cong: "Salón (congreg.)",
+        hint_montos: "Escribe solo los números; el formato de miles se pone solo.",
+        total: "Total",
+        label_rellenado: "Rellenado por (tú)",
+        label_verificado: "Verificado por (compañero)",
+        btn_generar: "Generar y compartir",
+        h1_resultado: "Papeleta generada",
+        btn_compartir: "Compartir",
+        btn_descargar: "Descargar PDF",
+        btn_nueva: "Nueva papeleta",
+        btn_abrir: "Abrir PDF",
+        generando: "Generando...",
+        err_completar: "Completa la fecha y ambos nombres.",
+        err_digitos: "Revisa los montos: tienen demasiados dígitos.",
+        err_generico: "Revisa los datos ingresados.",
+        err_pdf_lib: "No se pudo cargar la librería de PDF.",
+        res_fecha: "Fecha",
+        res_obra: "Obra mundial",
+        res_cong: "Salón (congregación)",
+        res_total: "TOTAL",
+        res_rellenado: "Rellenado por",
+        res_verificado: "Verificado por",
+        comp_obra: "Obra mundial",
+        comp_cong: "Salón",
+        comp_total: "TOTAL",
+        share_titulo: "Papeleta S-24",
+        title_app: "Papeletas S-24",
+        title_resultado: "Papeleta generada",
+        alert_share: "Tu navegador no soporta compartir archivos directamente.\nEl PDF se abrió en una pestaña nueva: desde ahí puedes compartirlo o guardarlo."
+      },
+      en: {
+        marca: "Papeleta S-24",
+        cabecera_sub: "Transaction record · cash count",
+        term_form: "C:\\papeleta.exe — record",
+        term_result: "C:\\result.txt — papeleta OK",
+        label_fecha: "Meeting date",
+        label_obra: "Worldwide work",
+        label_cong: "Hall (congreg.)",
+        hint_montos: "Type only the numbers; the thousands separator is added automatically.",
+        total: "Total",
+        label_rellenado: "Filled in by (you)",
+        label_verificado: "Verified by (companion)",
+        btn_generar: "Generate and share",
+        h1_resultado: "Papeleta generated",
+        btn_compartir: "Share",
+        btn_descargar: "Download PDF",
+        btn_nueva: "New papeleta",
+        btn_abrir: "Open PDF",
+        btn_abrir: "Open PDF",
+        generando: "Generating...",
+        err_completar: "Complete the date and both names.",
+        err_digitos: "Check the amounts: too many digits.",
+        err_generico: "Check the entered data.",
+        err_pdf_lib: "Could not load the PDF library.",
+        res_fecha: "Date",
+        res_obra: "Worldwide work",
+        res_cong: "Hall (congregation)",
+        res_total: "TOTAL",
+        res_rellenado: "Filled in by",
+        res_verificado: "Verified by",
+        comp_obra: "Worldwide work",
+        comp_cong: "Hall",
+        comp_total: "TOTAL",
+        share_titulo: "Papeleta S-24",
+        title_app: "Papeletas S-24",
+        title_resultado: "Papeleta generated",
+        alert_share: "Your browser can't share files directly.\nThe PDF opened in a new tab: from there you can share or save it."
+      }
+    };
+    var idiomaActual = "es";
+    try { idiomaActual = localStorage.getItem("s24_idioma") || "es"; } catch (e) {}
+    if (idiomaActual !== "en") idiomaActual = "es";
+    function t(clave) { return (IDIOMAS[idiomaActual] && IDIOMAS[idiomaActual][clave]) || clave; }
+    function ajustarBotonDescarga() {
+      var esFallback = !soportaCompartir();
+      var claveBtn = esFallback ? "btn_abrir" : "btn_descargar";
+      var icono = esFallback ? "i-share" : "i-download";
+      $("btn-descargar").innerHTML =
+        '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#' + icono + '"/></svg>' +
+        '<span data-i18n="' + claveBtn + '">' + t(claveBtn) + '</span>';
+    }
+    function aplicarIdioma(cod) {
+      idiomaActual = (cod === "en") ? "en" : "es";
+      try { localStorage.setItem("s24_idioma", idiomaActual); } catch (e) {}
+      document.documentElement.lang = idiomaActual;
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        el.textContent = t(el.getAttribute("data-i18n"));
+      });
+      document.title = t("title_app");
+      $("btn-generar").querySelector("[data-i18n]").textContent = t("btn_generar");
+      ajustarBotonDescarga();
+      document.querySelectorAll(".idiomas button").forEach(function (b) {
+        b.classList.toggle("activo", b.getAttribute("data-idioma") === idiomaActual);
+      });
+    }
+    document.querySelectorAll(".idiomas button").forEach(function (b) {
+      b.addEventListener("click", function () { aplicarIdioma(b.getAttribute("data-idioma")); });
+    });
 
     // ---------- Utilidades ----------
     function $(id) { return document.getElementById(id); }
@@ -235,15 +510,28 @@
     function mostrarError(msg) {
       $("error-texto").textContent = msg;
       $("error").classList.remove("oculto");
+      $("error").focus();
     }
+    var pdfLibCargada = null;
+    function cargarPDFLib() {
+      if (pdfLibCargada) return pdfLibCargada;
+      return pdfLibCargada = new Promise(function (res, rej) {
+        var s = document.createElement("script");
+        s.src = "pdf-lib.min.js";
+        s.onload = function () { res(window.PDFLib); };
+        s.onerror = function () { rej(new Error(t("err_pdf_lib"))); };
+        document.head.appendChild(s);
+      });
+    }
+
     function totalDe(r) {
       return Rellenar.formatearMonto(Rellenar.montoAEntero(r.obra) + Rellenar.montoAEntero(r.congregacion));
     }
     function textoResumen(r) {
-      return "📋 Papeleta S-24 — " + r.fecha + "\n" +
-        "🌍 Obra mundial: " + r.obra + "\n" +
-        "🏛️ Salón: " + r.congregacion + "\n" +
-        "💰 TOTAL: " + totalDe(r) + "\n" +
+      return "📋 " + t("share_titulo") + " — " + r.fecha + "\n" +
+        "🌍 " + t("comp_obra") + ": " + r.obra + "\n" +
+        "🏛️ " + t("comp_cong") + ": " + r.congregacion + "\n" +
+        "💰 " + t("comp_total") + ": " + totalDe(r) + "\n" +
         "✍️ " + r.rellenadoPor + " · ✔️ " + r.verificadoPor;
     }
 
@@ -253,15 +541,9 @@
     $("rellenado_por").value = config.rellenado_por || "";
     $("verificado_por").value = config.verificado_por || "";
 
-    // Si el navegador no soporta compartir archivos (iOS en HTTP), cambiar instrucciones
-    if (!soportaCompartir()) {
-      $("pasos-compartir").innerHTML =
-        "<li>Toca <b>Descargar PDF</b>: se abre en una pestaña nueva</li>" +
-        "<li>En esa pestaña usa el botón <b>Compartir</b> de Safari (cuadrado con flecha ↑)</li>" +
-        "<li>Elige <b>WhatsApp</b> → el grupo → enviar. Igual para <b>Drive</b></li>";
-      $("btn-descargar").innerHTML =
-        '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-share"/></svg>Abrir PDF';
-    }
+    // Si el navegador no soporta compartir archivos (iOS en HTTP), usar boton "Abrir PDF"
+    aplicarIdioma(idiomaActual);
+    ajustarBotonDescarga();
 
     // ---------- Generar papeleta ----------
     $("formulario").addEventListener("submit", async function (ev) {
@@ -269,17 +551,22 @@
       $("error").classList.add("oculto");
       var btn = $("btn-generar");
       btn.disabled = true;
-      btn.innerHTML = "Generando...";
+      btn.innerHTML = t("generando");
 
       try {
-        var obra = Rellenar.formatearMonto($("obra").value);
-        var cong = Rellenar.formatearMonto($("congregacion").value);
+        var obraRaw = $("obra").value;
+        var congRaw = $("congregacion").value;
         var rellenadoPor = $("rellenado_por").value.trim();
         var verificadoPor = $("verificado_por").value.trim();
         var fechaIso = $("fecha").value;
         if (!fechaIso || !rellenadoPor || !verificadoPor) {
-          throw new Error("Completa la fecha y ambos nombres.");
+          throw new Error(t("err_completar"));
         }
+        if (String(obraRaw).replace(/\D/g, "").length > 10 || String(congRaw).replace(/\D/g, "").length > 10) {
+          throw new Error(t("err_digitos"));
+        }
+        var obra = Rellenar.formatearMonto(obraRaw);
+        var cong = Rellenar.formatearMonto(congRaw);
 
         var datos = {
           fecha: fechaBonita(fechaIso),
@@ -288,13 +575,18 @@
           rellenadoPor: rellenadoPor,
           verificadoPor: verificadoPor
         };
-        var bytes = await Rellenar.generarPapeleta(PDFLib, PLANTILLA_B64, datos);
+        var PDFLib = await cargarPDFLib();
+        var plantillaActiva = (idiomaActual === "en" && typeof PLANTILLA_EN_B64 !== "undefined")
+          ? PLANTILLA_EN_B64 : PLANTILLA_B64;
+        var bytes = await Rellenar.generarPapeleta(PDFLib, plantillaActiva, datos);
 
         var ahora = new Date();
         var nombreArchivo = "S-24_" + fechaIso + "_" +
           String(ahora.getHours()).padStart(2, "0") + String(ahora.getMinutes()).padStart(2, "0") + ".pdf";
 
-        ultimoPdf = { bytes: bytes, nombreArchivo: nombreArchivo, datos: datos };
+        if (ultimoPdf && ultimoPdf.url) URL.revokeObjectURL(ultimoPdf.url);
+        var blobUrl = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        ultimoPdf = { bytes: bytes, nombreArchivo: nombreArchivo, datos: datos, url: blobUrl };
 
         guardarConfig({ rellenado_por: rellenadoPor, verificado_por: verificadoPor });
 
@@ -305,26 +597,28 @@
           compartir(false);
         }
       } catch (err) {
-        mostrarError(err.message || "Revisa los datos ingresados.");
+        mostrarError(err.message || t("err_generico"));
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg>Generar y compartir';
+        btn.innerHTML = '<svg class="ico" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="btn_generar">' + t("btn_generar") + '</span>';
       }
     });
 
     function mostrarResultado(datos) {
       $("resumen").innerHTML =
-        "Fecha <b>" + datos.fecha + "</b><br>" +
-        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-globe\"/></svg> Obra mundial <b>" + datos.obra + "</b><br>" +
-        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-building\"/></svg> Salón (congregación) <b>" + datos.congregacion + "</b><br>" +
-        "TOTAL <b>" + totalDe(datos) + "</b><br>" +
-        "Rellenado por <b>" + datos.rellenadoPor + "</b><br>" +
-        "Verificado por <b>" + datos.verificadoPor + "</b>";
+        t("res_fecha") + " <b>" + datos.fecha + "</b><br>" +
+        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-globe\"/></svg> " + t("res_obra") + " <b>" + datos.obra + "</b><br>" +
+        "<svg class=\"ico\" style=\"color:var(--accent)\" aria-hidden=\"true\"><use href=\"#i-building\"/></svg> " + t("res_cong") + " <b>" + datos.congregacion + "</b><br>" +
+        t("res_total") + " <b>" + totalDe(datos) + "</b><br>" +
+        t("res_rellenado") + " <b>" + datos.rellenadoPor + "</b><br>" +
+        t("res_verificado") + " <b>" + datos.verificadoPor + "</b>";
       $("vista-formulario").classList.add("oculto");
       $("vista-listo").classList.remove("oculto");
+      if (ultimoPdf && ultimoPdf.url) $("vista-pdf").src = ultimoPdf.url;
+      document.title = t("title_resultado");
       $("vista-listo").style.animation = "none"; void $("vista-listo").offsetWidth;
       $("vista-listo").style.animation = "aparecer .35s ease both";
-      window.scrollTo(0, 0);
+      document.querySelector(".contenedor").scrollTop = 0;
     }
 
     // ---------- Compartir / descargar ----------
@@ -336,15 +630,14 @@
       var datos = { files: [archivo] };
       if (!esIOS()) {
         datos.text = textoResumen(ultimoPdf.datos);
-        datos.title = "Papeleta S-24";
+        datos.title = t("share_titulo");
       }
       if (navigator.canShare && navigator.canShare(datos)) {
         navigator.share(datos).catch(function () {});
       } else {
         descargar();
         if (mostrarFallback !== false) {
-          alert("Tu navegador no soporta compartir archivos directamente.\n" +
-                "El PDF se abrió en una pestaña nueva: desde ahí puedes compartirlo o guardarlo.");
+          alert(t("alert_share"));
         }
       }
     }
@@ -363,8 +656,8 @@
 
     function descargar() {
       if (!ultimoPdf) return;
-      var blob = new Blob([ultimoPdf.bytes], { type: "application/pdf" });
-      var url = URL.createObjectURL(blob);
+      var url = ultimoPdf.url || URL.createObjectURL(new Blob([ultimoPdf.bytes], { type: "application/pdf" }));
+      var temporal = url !== ultimoPdf.url;
       if (esIOS()) {
         // iOS no "descarga" PDFs: los muestra. Abrir en pestana NUEVA para no perder la app.
         window.open(url, "_blank");
@@ -373,8 +666,8 @@
         a.href = url; a.download = ultimoPdf.nombreArchivo;
         document.body.appendChild(a); a.click(); a.remove();
       }
-      // La URL debe vivir hasta que la pestana nueva la cargue
-      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      // Si la URL era temporal, hay que liberarla; la persistente se revoca al regenerar
+      setTimeout(function () { if (temporal) URL.revokeObjectURL(url); }, 60000);
     }
 
     $("btn-compartir").addEventListener("click", function () { compartir(true); });
@@ -385,8 +678,93 @@
       $("obra").value = "";
       $("congregacion").value = "";
       $("fecha").value = hoy();
-      window.scrollTo(0, 0);
+      document.title = t("title_app");
+      actualizarTotalVivo();
+      document.querySelector(".contenedor").scrollTop = 0;
     });
+
+    // ---------- Total en vivo ----------
+    // Efecto Matrix: el total "se descifra" en lugar de aparecer directo
+    var _totalTimer = null;
+    function descifrar(el, finalTexto) {
+      var chars = "アカサタナハマヤラワ0123456789ABCDEF$#%&*";
+      var t0 = performance.now();
+      var dur = 350;
+      var actual = el.textContent;
+      var obj = { el: el, actual: actual };
+      clearInterval(_totalTimer);
+      _totalTimer = setInterval(function () {
+        var p = (performance.now() - t0) / dur;
+        if (p >= 1) {
+          clearInterval(_totalTimer);
+          el.textContent = finalTexto;
+          return;
+        }
+        var visible = Math.round(p * finalTexto.length);
+        var out = "";
+        for (var i = 0; i < finalTexto.length; i++) {
+          if (i < visible) out += finalTexto[i];
+          else if (i < actual.length) out += actual[i];
+          else out += chars[Math.floor(Math.random() * chars.length)];
+        }
+        el.textContent = out;
+      }, 30);
+    }
+    function actualizarTotalVivo() {
+      var n = 0;
+      ["obra", "congregacion"].forEach(function (id) {
+        var d = String($(id).value || "").replace(/\D/g, "");
+        if (d) n += parseInt(d, 10);
+      });
+      var el = $("total-vivo-monto");
+      if (n) descifrar(el, Rellenar.formatearMonto(n)); else el.textContent = "—";
+    }
+    $("obra").addEventListener("input", actualizarTotalVivo);
+    $("congregacion").addEventListener("input", actualizarTotalVivo);
+    actualizarTotalVivo();
+
+    // ---------- Lluvia digital Matrix ----------
+    (function lluvia() {
+      var cv = document.getElementById("matrix-canvas");
+      if (!cv || !cv.getContext) return;
+      var ctx = cv.getContext("2d");
+      var chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFXYZ<>*+=|/:;._-$%&#";
+      var cols = 0;
+      var drops = [];
+      var vel = [];
+      var fontSize = 16;
+      function redimensionar() {
+        cv.width = window.innerWidth;
+        cv.height = window.innerHeight;
+        cols = Math.floor(cv.width / fontSize);
+        drops = []; vel = [];
+        for (var i = 0; i < cols; i++) {
+          drops[i] = Math.floor(Math.random() * -80);
+          vel[i] = .4 + Math.random();
+        }
+      }
+      redimensionar();
+      window.addEventListener("resize", redimensionar);
+      setInterval(function () {
+        if (cv.width === 0 || cv.height === 0) return;
+        ctx.fillStyle = "rgba(0,0,0,.07)";
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+        for (var i = 0; i < cols; i++) {
+          var y = drops[i] * fontSize;
+          if (y - fontSize > 0) {
+            ctx.fillStyle = "rgba(0,200,65,.45)";
+            ctx.fillText(chars.charAt(Math.floor(Math.random() * chars.length)), i * fontSize, y - fontSize);
+          }
+          ctx.shadowBlur = 10; ctx.shadowColor = "#00ff41";
+          ctx.fillStyle = Math.random() > .95 ? "#ffffff" : "#00ff41";
+          ctx.fillText(chars.charAt(Math.floor(Math.random() * chars.length)), i * fontSize, y);
+          ctx.shadowBlur = 0;
+          if (y > cv.height && Math.random() > .975) { drops[i] = 0; }
+          drops[i] += vel[i];
+        }
+      }, 45);
+    })();
 
     // ---------- Service worker ----------
     if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
